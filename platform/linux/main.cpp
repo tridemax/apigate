@@ -1,4 +1,5 @@
 #include "platform.h"
+#include "../../source/Proxygen/ProxygenServer.h"
 
 
 //-------------------------------------------------------------------------------------------------
@@ -6,8 +7,32 @@
 //-------------------------------------------------------------------------------------------------
 int main(int argc, const char** argv)
 {
-	int exitCode = 0;
+	// Parse command line
+	for (int32_t argumentIndex = 1; argumentIndex < argc; ++argumentIndex)
+	{
+		if (boost::starts_with(argv[argumentIndex], "--utterance-storage"))
+		{
+			return 0;
+		}
+	}
 
-	return exitCode;
+	// Populate request handler factories
+	apigate::HandlerFactories handlerFactories;
+
+	// Run the proxygen server
+	std::unique_ptr<apigate::ProxygenServer> proxygenServer(new apigate::ProxygenServer());
+
+	if (!proxygenServer->Run(handlerFactories))
+	{
+		assert(false);
+		return 1;
+	}
+
+	// Terminal loop
+	while (true)
+	{
+		sleep(1);
+	}
+
+	return 0;
 }
-

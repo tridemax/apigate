@@ -19,6 +19,7 @@ CONFIG(debug, debug|release) {
 TEMPLATE = app
 CONFIG += console precompile_header c++14
 CONFIG -= qt
+MAKEFILE = $$_PRO_FILE_PWD_/apigate.makefile
 
 #-------------------------------------------------------------------------------------------------
 # warnings
@@ -45,6 +46,8 @@ QMAKE_CXXFLAGS += \
 	-I$$_PRO_FILE_PWD_/../auxiliary \
 	-I$$_PRO_FILE_PWD_/../boost \
 	-I$$_PRO_FILE_PWD_/../tbb/include \
+	-I$$_PRO_FILE_PWD_/../thirdparty/libevent/include \
+	-I$$_PRO_FILE_PWD_/../thirdparty/libevent_config/linux \
 	-I$$_PRO_FILE_PWD_/platform/linux
 
 PRECOMPILED_HEADER = $$_PRO_FILE_PWD_/platform/linux/platform.h
@@ -75,16 +78,25 @@ LIBS += \
 CONFIG(debug, debug|release) {
 	LIBS += \
 		-lauxiliary_debug \
-		-ltbb_debug \
+		-lproxygenhttpserver \
+		-lwangle \
+		-lfolly \
+		-lglog \
 		-lpthread
 
 } else {
 	LIBS += \
 		-lauxiliary \
-		-ltbb \
+		-lproxygenhttpserver \
+		-lwangle \
+		-lfolly \
+		-lglog \
 		-lpthread \
 		-O3
 }
+
+QMAKE_LFLAGS_RELEASE -= -Wl,-O0 -Wl,-O1 -Wl,-O2
+QMAKE_LFLAGS_RELEASE *= -Wl,-O3
 
 #-------------------------------------------------------------------------------------------------
 # dependencies
@@ -112,12 +124,14 @@ QMAKE_EXTRA_TARGETS += first copydata
 # files
 #-------------------------------------------------------------------------------------------------
 SOURCES += \
-    platform/linux/main.cpp \
-	source/HttpParser/http_parser.cpp \
-    source/RequestDispatcher/RequestDispatcher.cpp
+	platform/linux/main.cpp \
+    source/Proxygen/ProxygenServer.cpp \
+    source/Proxygen/InternalHandlerFactory.cpp \
+    source/Proxygen/ExceptionHandler.cpp
 
 HEADERS += \
-    platform/linux/platform.h \
-    source/HttpParser/http_parser.h \
-    source/RequestDispatcher/RequestDispatcher.h
-
+	platform/linux/platform.h \
+    source/Proxygen/ProxygenServer.h \
+    source/Proxygen/InternalHandlerFactory.h \
+    source/Proxygen/ExceptionHandler.h \
+    source/Proxygen/Miscellaneous.h

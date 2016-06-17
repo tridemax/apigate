@@ -58,7 +58,7 @@
 #include <chrono>
 
 //-------------------------------------------------------------------------------------------------
-/// boost & tbb
+/// third party
 //-------------------------------------------------------------------------------------------------
 #include <boost/config.hpp>
 #include <boost/noncopyable.hpp>
@@ -68,6 +68,14 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/unordered_map.hpp>
-#include <tbb/tbb.h>
 
 #include <auxiliary.h>
+
+#include <folly/Memory.h>
+#include <folly/Portability.h>
+#include <folly/io/async/EventBaseManager.h>
+#include <folly/io/async/EventBase.h>
+#include <proxygen/httpserver/HTTPServer.h>
+#include <proxygen/httpserver/RequestHandlerFactory.h>
+#include <proxygen/httpserver/RequestHandler.h>
+#include <proxygen/httpserver/ResponseBuilder.h>
