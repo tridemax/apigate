@@ -1,5 +1,6 @@
 #include "platform.h"
 #include "../../source/Proxygen/ProxygenServer.h"
+#include "../../source/Endpoint/ProxygenEndpoint.h"
 
 
 //-------------------------------------------------------------------------------------------------
@@ -16,13 +17,10 @@ int main(int argc, const char** argv)
 		}
 	}
 
-	// Populate request handler factories
-	apigate::HandlerFactories handlerFactories;
-
 	// Run the proxygen server
 	std::unique_ptr<apigate::ProxygenServer> proxygenServer(new apigate::ProxygenServer());
 
-	if (!proxygenServer->Run(handlerFactories))
+	if (!proxygenServer->Run(new apigate::ProxygenEndpoint()))
 	{
 		assert(false);
 		return 1;

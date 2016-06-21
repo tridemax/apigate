@@ -18,9 +18,9 @@ namespace apigate
 	//-------------------------------------------------------------------------------------------------
 	proxygen::RequestHandler* InternalHandlerFactory::onRequest(proxygen::RequestHandler* requestHandler, proxygen::HTTPMessage* httpMessage) noexcept
 	{
-		for (auto* handlerFactory : m_handlerFactories)
+		for (auto* factory : m_factories)
 		{
-			if (auto* requestHandler = handlerFactory->CreateHandler(httpMessage))
+			if (auto* requestHandler = factory->CreateHandler(httpMessage))
 			{
 				return requestHandler;
 			}

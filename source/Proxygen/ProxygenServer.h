@@ -14,7 +14,7 @@ namespace apigate
 		ProxygenServer();
 		~ProxygenServer();
 
-		bool Run(const HandlerFactories& handlerFactories);
+		bool Run(proxygen::RequestHandlerFactory* handlerFactory);
 		bool Stop();
 	};
 }

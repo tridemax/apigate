@@ -16,7 +16,7 @@ namespace apigate
 	}
 
 	//-------------------------------------------------------------------------------------------------
-	bool ProxygenServer::Run(const HandlerFactories& handlerFactories)
+	bool ProxygenServer::Run(proxygen::RequestHandlerFactory* handlerFactory)
 	{
 		std::vector<proxygen::HTTPServer::IPConfig> IPs = {
 			{ folly::SocketAddress("127.0.0.1", 11000, true), proxygen::HTTPServer::Protocol::HTTP},
@@ -29,7 +29,7 @@ namespace apigate
 		options.idleTimeout = std::chrono::milliseconds(60000);
 		options.shutdownOn = {SIGINT, SIGTERM};
 		options.enableContentCompression = false;
-		options.handlerFactories = proxygen::RequestHandlerChain().addThen<InternalHandlerFactory>(handlerFactories).build();
+		options.handlerFactories.emplace_back(std::unique_ptr<proxygen::RequestHandlerFactory>(handlerFactory));
 
 		proxygen::HTTPServer server(std::move(options));
 

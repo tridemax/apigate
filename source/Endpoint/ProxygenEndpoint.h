@@ -1,22 +1,19 @@
 #pragma once
 
-#include "Miscellaneous.h"
-
 
 namespace apigate
 {
 	//-------------------------------------------------------------------------------------------------
-	/// InternalHandlerFactory
+	/// ProxygenEndpoint
 	//-------------------------------------------------------------------------------------------------
-	class InternalHandlerFactory : public proxygen::RequestHandlerFactory
+	class ProxygenEndpoint : public boost::noncopyable, public proxygen::RequestHandlerFactory
 	{
 	private:
-		const ProxygenFactories&	m_factories;
+//		const ProxygenFactories&	m_factories;
 
 	public:
-		inline InternalHandlerFactory(const ProxygenFactories& factories) : m_factories(factories)
-		{
-		}
+		//---------------------------------------------------------------------------------------------
+		/// RequestHandlerFactory
 
 		virtual void onServerStart(folly::EventBase* eventBase) noexcept override;
 		virtual void onServerStop() noexcept override;

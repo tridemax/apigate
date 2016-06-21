@@ -4,9 +4,9 @@
 namespace apigate
 {
 	//-------------------------------------------------------------------------------------------------
-	/// HttpStatusCode
+	/// HTTPStatusCode
 	//-------------------------------------------------------------------------------------------------
-	enum class HttpStatusCode : uint16_t
+	enum class HTTPStatusCode : uint16_t
 	{
 		Unauthorized	= 401,
 		Forbidden		= 403,
@@ -14,13 +14,13 @@ namespace apigate
 	};
 
 	//-------------------------------------------------------------------------------------------------
-	/// IHandlerFactory
+	/// IProxygenFactory
 	//-------------------------------------------------------------------------------------------------
-	class IHandlerFactory
+	class IProxygenFactory
 	{
 	public:
 		virtual proxygen::RequestHandler* CreateHandler(proxygen::HTTPMessage* httpMessage) noexcept = 0;
 	};
 
-	typedef std::vector<IHandlerFactory*> HandlerFactories;
+	typedef std::vector<IProxygenFactory*> ProxygenFactories;
 }

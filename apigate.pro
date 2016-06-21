@@ -40,14 +40,9 @@ QMAKE_CXXFLAGS_WARN_ON += \
 QMAKE_CXXFLAGS += \
 	-m64 \
 	-msse -msse2 -msse3 -mssse3 -msse4 -msse4.1 -msse4.2 -mavx -mf16c \
-	-fpic \
-	-fdata-sections \
-	-ffunction-sections \
+	-fpic -fdata-sections -ffunction-sections -fno-strict-aliasing \
 	-I$$_PRO_FILE_PWD_/../auxiliary \
 	-I$$_PRO_FILE_PWD_/../boost \
-	-I$$_PRO_FILE_PWD_/../tbb/include \
-	-I$$_PRO_FILE_PWD_/../thirdparty/libevent/include \
-	-I$$_PRO_FILE_PWD_/../thirdparty/libevent_config/linux \
 	-I$$_PRO_FILE_PWD_/platform/linux
 
 PRECOMPILED_HEADER = $$_PRO_FILE_PWD_/platform/linux/platform.h
@@ -70,28 +65,25 @@ CONFIG(debug, debug|release) {
 #-------------------------------------------------------------------------------------------------
 LIBS += \
 	-L$$DESTDIR \
-	-L$$_PRO_FILE_PWD_/../tbb/lib/intel64/gcc4.4 \
 	-Wl,--unresolved-symbols=report-all \
 	-Wl,--gc-sections \
 	-Wl,-rpath,./
 
+LIBS += \
+	-lboost_system \
+	-lboost_filesystem \
+	-lproxygenhttpserver \
+	-lfolly \
+	-lglog \
+	-lpthread
+
 CONFIG(debug, debug|release) {
 	LIBS += \
-		-lauxiliary_debug \
-		-lproxygenhttpserver \
-		-lwangle \
-		-lfolly \
-		-lglog \
-		-lpthread
+		-lauxiliary_debug
 
 } else {
 	LIBS += \
 		-lauxiliary \
-		-lproxygenhttpserver \
-		-lwangle \
-		-lfolly \
-		-lglog \
-		-lpthread \
 		-O3
 }
 
@@ -101,18 +93,10 @@ QMAKE_LFLAGS_RELEASE *= -Wl,-O3
 #-------------------------------------------------------------------------------------------------
 # dependencies
 #-------------------------------------------------------------------------------------------------
-CONFIG(debug, debug|release) {
-	copydata.commands = cp -f -v \
-		$$_PRO_FILE_PWD_/../tbb/lib/intel64/gcc4.4/libtbb_debug.so \
-		$$_PRO_FILE_PWD_/../tbb/lib/intel64/gcc4.4/libtbb_debug.so.2 \
-		$$DESTDIR
-
-} else {
-	copydata.commands = cp -f -v \
-		$$_PRO_FILE_PWD_/../tbb/lib/intel64/gcc4.4/libtbb.so \
-		$$_PRO_FILE_PWD_/../tbb/lib/intel64/gcc4.4/libtbb.so.2 \
-		$$DESTDIR
-}
+copydata.commands = cp -f -v \
+#	/usr/lib/libevent-2.0.so.5 \
+	$$_PRO_FILE_PWD_/../tbb/lib/intel64/gcc4.4/libtbb.so.2 \
+	$$DESTDIR
 
 first.depends = $(first) copydata
 export(first.depends)
@@ -120,18 +104,15 @@ export(copydata.commands)
 
 QMAKE_EXTRA_TARGETS += first copydata
 
-#-------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------
 # files
 #-------------------------------------------------------------------------------------------------
 SOURCES += \
 	platform/linux/main.cpp \
     source/Proxygen/ProxygenServer.cpp \
-    source/Proxygen/InternalHandlerFactory.cpp \
-    source/Proxygen/ExceptionHandler.cpp
+    source/Endpoint/ProxygenEndpoint.cpp
 
 HEADERS += \
 	platform/linux/platform.h \
     source/Proxygen/ProxygenServer.h \
-    source/Proxygen/InternalHandlerFactory.h \
-    source/Proxygen/ExceptionHandler.h \
-    source/Proxygen/Miscellaneous.h
+    source/Endpoint/ProxygenEndpoint.h
