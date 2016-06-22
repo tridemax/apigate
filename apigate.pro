@@ -79,14 +79,15 @@ LIBS += \
 	-l:libproxygenlib.a \
 	-l:libwangle.a \
 	-l:libfolly.a \
-	-lglog \
-	-lgflags \
+	-l:libglog.a \
+	-l:libgflags.a \
 	-lpthread \
 	-lz \
 	-ldouble-conversion \
 	-lssl \
 	-lcrypto \
-	-l:libevent-2.0.so.5.1.9
+	-l:libevent-2.0.so.5.1.9 \
+	-l:libunwind.so.8.0.1
 
 CONFIG(debug, debug|release) {
 	LIBS += \
@@ -104,18 +105,13 @@ QMAKE_LFLAGS_RELEASE *= -Wl,-O3
 #-------------------------------------------------------------------------------------------------
 # dependencies
 #-------------------------------------------------------------------------------------------------
+makedist.commands = objcopy -v --strip-debug --strip-unneeded --target elf64-x86-64 $$DESTDIR/$${TARGET} $$DESTDIR/$${TARGET}_dist
 
-postprocess.commands = objcopy $$DESTDIR/apigate $$DESTDIR/apigate_dist --strip-debug --strip-unneeded --target elf64-x86-64
-#copydata.commands = cp -f -v \
-#	/usr/lib/libevent-2.0.so.5 \
-#	$$_PRO_FILE_PWD_/../tbb/lib/intel64/gcc4.4/libtbb.so.2 \
-#	$$DESTDIR
-
-first.depends = $(first) postprocess
+first.depends = $(first) makedist
 export(first.depends)
-export(postprocess.commands)
+export(makedist.commands)
 
-QMAKE_EXTRA_TARGETS += first postprocess
+QMAKE_EXTRA_TARGETS += first makedist
 
 #------------------------------------------------------------------------------------------------
 # files
