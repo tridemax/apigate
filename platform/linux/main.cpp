@@ -11,7 +11,7 @@ int main(int argc, const char** argv)
 	// Parse command line
 	for (int32_t argumentIndex = 1; argumentIndex < argc; ++argumentIndex)
 	{
-		if (boost::starts_with(argv[argumentIndex], "--utterance-storage"))
+		if (boost::starts_with(argv[argumentIndex], "--avconvert"))
 		{
 			return 0;
 		}
