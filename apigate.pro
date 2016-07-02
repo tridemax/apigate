@@ -46,6 +46,7 @@ QMAKE_CXXFLAGS += \
 	-ffunction-sections \
 	-fno-strict-aliasing \
 	-I$$_PRO_FILE_PWD_/../auxiliary \
+	-I$$_PRO_FILE_PWD_/../audioconvert \
 	-I$$_PRO_FILE_PWD_/platform/linux
 
 PRECOMPILED_HEADER = $$_PRO_FILE_PWD_/platform/linux/platform.h
@@ -73,8 +74,10 @@ LIBS += \
 	-Wl,-rpath,./
 
 LIBS += \
-	-l:libboost_system.a \
-	-l:libboost_filesystem.a \
+	-lboost_system
+	-lboost_filesystem
+
+LIBS += \
 	-l:libproxygenhttpserver.a \
 	-l:libproxygenlib.a \
 	-l:libwangle.a \
@@ -91,11 +94,13 @@ LIBS += \
 
 CONFIG(debug, debug|release) {
 	LIBS += \
-		-lauxiliary_debug
+		-lauxiliary_debug \
+		-laudioconvert_debug
 
 } else {
 	LIBS += \
 		-lauxiliary \
+		-laudioconvert \
 		-O3
 }
 
@@ -119,9 +124,13 @@ QMAKE_EXTRA_TARGETS += first makedist
 SOURCES += \
 	platform/linux/main.cpp \
     source/Proxygen/ProxygenServer.cpp \
-    source/Endpoint/ProxygenEndpoint.cpp
+    source/Endpoint/ProxygenEndpoint.cpp \
+    source/Endpoint/AudioconvertHandler.cpp \
+    source/Endpoint/ExceptionHandler.cpp
 
 HEADERS += \
 	platform/linux/platform.h \
     source/Proxygen/ProxygenServer.h \
-    source/Endpoint/ProxygenEndpoint.h
+    source/Endpoint/ProxygenEndpoint.h \
+    source/Endpoint/AudioconvertHandler.h \
+    source/Endpoint/ExceptionHandler.h

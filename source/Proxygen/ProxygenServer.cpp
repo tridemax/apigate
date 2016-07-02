@@ -1,6 +1,5 @@
 #include "platform.h"
 #include "ProxygenServer.h"
-#include "InternalHandlerFactory.h"
 
 
 namespace apigate

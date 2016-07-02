@@ -70,6 +70,7 @@
 #include <boost/unordered_map.hpp>
 
 #include <auxiliary.h>
+#include <audioconvert.h>
 
 #include <folly/Memory.h>
 #include <folly/Portability.h>

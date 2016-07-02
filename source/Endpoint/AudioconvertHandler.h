@@ -1,23 +1,17 @@
 #pragma once
 
-#include "Miscellaneous.h"
-
 
 namespace apigate
 {
 	//-------------------------------------------------------------------------------------------------
-	/// ExceptionHandler
+	/// AudioconvertHandler
 	//-------------------------------------------------------------------------------------------------
-	class ExceptionHandler : public proxygen::RequestHandler
+	class AudioconvertHandler : public proxygen::RequestHandler
 	{
 	private:
-		HttpStatusCode				m_statusCode;
+//		HTTPStatusCode				m_statusCode;
 
 	public:
-		inline ExceptionHandler(HttpStatusCode statusCode) : m_statusCode(statusCode)
-		{
-		}
-
 		virtual void onRequest(std::unique_ptr<proxygen::HTTPMessage> headers) noexcept override;
 		virtual void onBody(std::unique_ptr<folly::IOBuf> body) noexcept override;
 		virtual void onEOM() noexcept override;

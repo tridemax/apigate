@@ -21,16 +21,16 @@ namespace apigate
 
 		switch (m_statusCode)
 		{
-		case HttpStatusCode::Unauthorized:
-			responseBuilder.status(static_cast<uint16_t>(HttpStatusCode::Unauthorized), "Unauthorized");
+		case HTTPStatusCode::Unauthorized:
+			responseBuilder.status(static_cast<uint16_t>(HTTPStatusCode::Unauthorized), "Unauthorized");
 			break;
 
-		case HttpStatusCode::Forbidden:
-			responseBuilder.status(static_cast<uint16_t>(HttpStatusCode::Forbidden), "Forbidden");
+		case HTTPStatusCode::Forbidden:
+			responseBuilder.status(static_cast<uint16_t>(HTTPStatusCode::Forbidden), "Forbidden");
 			break;
 
-		case HttpStatusCode::NotFound:
-			responseBuilder.status(static_cast<uint16_t>(HttpStatusCode::NotFound), "Not Found");
+		case HTTPStatusCode::NotFound:
+			responseBuilder.status(static_cast<uint16_t>(HTTPStatusCode::NotFound), "Not Found");
 			break;
 		}
 
@@ -54,33 +54,3 @@ namespace apigate
 		delete this;
 	}
 }
-
-
-/*
-void EchoHandler::onBody(std::unique_ptr<folly::IOBuf> body) noexcept {
-  if (body_) {
-    body_->prependChain(std::move(body));
-  } else {
-    body_ = std::move(body);
-  }
-}
-
-void EchoHandler::onEOM() noexcept {
-
-	folly::EventBase* evb = folly::EventBaseManager::get()->getExistingEventBase();
-
-	auto* downstream = downstream_;
-
-	std::thread t([evb, downstream]()
-	{
-		evb->runInEventBaseThread([downstream](){
-			ResponseBuilder(downstream)
-			  .status(200, "OK")
-			  .header("Content-Type", "text/plain")
-			  .body(std::string("Slava Urkaine!"))
-			  .sendWithEOM();
-		});
-	});
-	t.detach();
-}
-*/
