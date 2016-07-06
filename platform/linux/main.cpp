@@ -8,13 +8,25 @@
 //-------------------------------------------------------------------------------------------------
 int main(int argc, const char** argv)
 {
-	// Parse command line
+	// Build path to configuration file
+	boost::filesystem::path configPath;
+
 	for (int32_t argumentIndex = 1; argumentIndex < argc; ++argumentIndex)
 	{
-		if (boost::starts_with(argv[argumentIndex], "--avconvert"))
+		if (boost::starts_with(argv[argumentIndex], "--config"))
 		{
-			return 0;
+			if (argumentIndex + 1 != argc)
+			{
+				configPath = argv[++argumentIndex];
+			}
 		}
+	}
+
+	if (configPath.empty())
+	{
+		configPath = argv[0];
+		configPath.remove_filename();
+		configPath /= "apigate.conf";
 	}
 
 	// Run the proxygen server

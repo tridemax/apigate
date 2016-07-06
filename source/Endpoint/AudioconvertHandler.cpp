@@ -1,5 +1,6 @@
 #include "platform.h"
 #include "AudioconvertHandler.h"
+#include "Miscellaneous.h"
 
 
 namespace apigate
@@ -7,6 +8,10 @@ namespace apigate
 	//-------------------------------------------------------------------------------------------------
 	void AudioconvertHandler::onRequest(std::unique_ptr<proxygen::HTTPMessage> headers) noexcept
 	{
+		auto& queryParams = headers->getQueryParams();
+
+		auto inputFormat = queryParams.find("in");
+		auto outputFormat = queryParams.find("out");
 	}
 
 	//-------------------------------------------------------------------------------------------------
@@ -14,12 +19,12 @@ namespace apigate
 	{
 	}
 
-	//-------------------------------------------------------------------------------------------------
+/*	//-------------------------------------------------------------------------------------------------
 	void AudioconvertHandler::onEOM() noexcept
 	{
 		proxygen::ResponseBuilder responseBuilder(downstream_);
 
-		responseBuilder.status(200, "OK");
+		responseBuilder.status(static_cast<uint16_t>(HTTPStatusCode::Ok), HTTPStatusCodeToString(HTTPStatusCode::Ok));
 
 		responseBuilder.sendWithEOM();
 	}

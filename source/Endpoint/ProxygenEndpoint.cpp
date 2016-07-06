@@ -49,7 +49,7 @@ t.detach();
 	//-------------------------------------------------------------------------------------------------
 	proxygen::RequestHandler* ProxygenEndpoint::onRequest(proxygen::RequestHandler* requestHandler, proxygen::HTTPMessage* httpMessage) noexcept
 	{
-		if (strcasecmp(httpMessage->getPath().c_str(), "audioconvert") == 0)
+		if (strcmp(httpMessage->getPath().c_str(), "/audioconvert") == 0)
 		{
 			return new AudioconvertHandler();
 		}

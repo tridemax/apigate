@@ -9,7 +9,13 @@ namespace apigate
 	class AudioconvertHandler : public proxygen::RequestHandler
 	{
 	private:
-//		HTTPStatusCode				m_statusCode;
+		typedef audioconvert::AudioConverter AudioConverter;
+
+	private:
+		AudioConverter				m_audioConverter;
+		audioconvert::AudioFormat	m_inputFormat;
+		audioconvert::AudioFormat	m_outputFormat;
+		uint32_t					m_sampleRate;
 
 	public:
 		virtual void onRequest(std::unique_ptr<proxygen::HTTPMessage> headers) noexcept override;
@@ -18,5 +24,7 @@ namespace apigate
 		virtual void onUpgrade(proxygen::UpgradeProtocol protocol) noexcept override;
 		virtual void requestComplete() noexcept override;
 		virtual void onError(proxygen::ProxygenError error) noexcept override;
+
+	private:
 	};
 }

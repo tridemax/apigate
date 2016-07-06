@@ -74,7 +74,7 @@ LIBS += \
 	-Wl,-rpath,./
 
 LIBS += \
-	-lboost_system
+	-lboost_system \
 	-lboost_filesystem
 
 LIBS += \
@@ -123,14 +123,15 @@ QMAKE_EXTRA_TARGETS += first makedist
 #-------------------------------------------------------------------------------------------------
 SOURCES += \
 	platform/linux/main.cpp \
-    source/Proxygen/ProxygenServer.cpp \
-    source/Endpoint/ProxygenEndpoint.cpp \
+	source/Proxygen/ProxygenServer.cpp \
     source/Endpoint/AudioconvertHandler.cpp \
-    source/Endpoint/ExceptionHandler.cpp
+    source/Endpoint/ExceptionHandler.cpp \
+    source/Endpoint/ProxygenEndpoint.cpp
 
 HEADERS += \
 	platform/linux/platform.h \
-    source/Proxygen/ProxygenServer.h \
-    source/Endpoint/ProxygenEndpoint.h \
+	source/Proxygen/ProxygenServer.h \
     source/Endpoint/AudioconvertHandler.h \
-    source/Endpoint/ExceptionHandler.h
+    source/Endpoint/ExceptionHandler.h \
+    source/Endpoint/Miscellaneous.h \
+    source/Endpoint/ProxygenEndpoint.h
